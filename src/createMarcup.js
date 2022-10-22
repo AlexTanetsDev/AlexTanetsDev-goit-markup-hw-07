@@ -1,8 +1,16 @@
-
-export function createMapkup(photos){
-
- return photos.map(({webformatURL,largeImageURL,tags,likes,views,comments,downloads})=>{
-  return `<div class="photo-card">
+export function createMapkup(photos) {
+  return photos
+    .map(
+      ({
+        webformatURL,
+        largeImageURL,
+        tags,
+        likes,
+        views,
+        comments,
+        downloads,
+      }) => {
+        return `<div class="photo-card">
   <img src="${webformatURL}" alt="${tags}" loading="lazy" />
   <div class="info">
     <p class="info-item">
@@ -18,6 +26,8 @@ export function createMapkup(photos){
       <b>Downloads</b>${downloads}
     </p>
   </div>
-</div>` 
-  }).join('')
-  }
+</div>`;
+      }
+    )
+    .join('');
+}
