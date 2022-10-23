@@ -1,10 +1,9 @@
 import axios from 'axios';
 import Notiflix from 'notiflix';
-import simpleLightbox from 'simplelightbox';
+import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import { createMapkup } from './createMarcup';
 
-const lightbox = new simpleLightbox('.gallery a');
 const BASE_URL = 'https://pixabay.com/api/';
 const KEY = '30743258-d8407cc281d6c3ad648c29387';
 let page = 1;
@@ -15,7 +14,7 @@ const observerOpions = {
   threshold: 1.0,
 };
 const observer = new IntersectionObserver(onload, observerOpions);
-
+const lightbox = new SimpleLightbox('.gallery a', {});
 const refs = {
   form: document.querySelector('#search-form'),
   input: document.querySelector('input'),
@@ -27,7 +26,7 @@ refs.form.addEventListener('submit', onSubmit);
 
 async function onSubmit(evt) {
   evt.preventDefault();
-  if (refs.input.value === '') {
+  if (refs.input.value.trim() === '') {
     Notiflix.Notify.failure('Please enter a keyword');
     return;
   }
@@ -40,10 +39,12 @@ async function onSubmit(evt) {
     Notiflix.Notify.failure(
       'Sorry, there are no images matching your search query. Please try again.'
     );
+    return;
   }
   Notiflix.Notify.info(`Hooray! We found ${response.data.totalHits} images.`);
   renderImages(response.data.hits);
   observer.observe(refs.guard);
+  lightbox.refresh();
 }
 
 async function fetchPhotos() {
@@ -57,6 +58,7 @@ async function fetchPhotos() {
     Notiflix.Notify.failure(
       "We're sorry, but you've reached the end of search results."
     );
+    return;
   }
 }
 
@@ -69,8 +71,13 @@ function renderImages(images) {
 function onload(entries) {
   entries.forEach(async entry => {
     if (entry.isIntersecting) {
-      const response = await fetchPhotos();
-      renderImages(response.data.hits);
+      try {
+        const response = await fetchPhotos();
+        renderImages(response.data.hits);
+      } catch (error) {
+        console.log(error);
+      }
     }
   });
+  lightbox.refresh();
 }

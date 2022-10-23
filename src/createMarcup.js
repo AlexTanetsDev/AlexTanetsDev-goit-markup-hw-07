@@ -10,7 +10,7 @@ export function createMapkup(photos) {
         comments,
         downloads,
       }) => {
-        return `<div class="photo-card">
+        return `<a href="${largeImageURL}" class="card-wraper"><div class="photo-card">
   <img src="${webformatURL}" alt="${tags}" loading="lazy" />
   <div class="info">
     <p class="info-item">
@@ -26,7 +26,7 @@ export function createMapkup(photos) {
       <b>Downloads</b>${downloads}
     </p>
   </div>
-</div>`;
+</div></a>`;
       }
     )
     .join('');
