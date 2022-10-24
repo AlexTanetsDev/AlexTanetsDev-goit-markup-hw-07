@@ -39,8 +39,8 @@ button {
   flex-wrap: wrap;
   gap: 10px;
   padding-top: 45px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .card-wraper {
