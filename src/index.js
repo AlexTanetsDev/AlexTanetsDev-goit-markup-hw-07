@@ -2,7 +2,7 @@ import axios from 'axios';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import { createMapkup } from './createMarcup';
+import { createMapkup } from './createMarkup';
 
 const BASE_URL = 'https://pixabay.com/api/';
 const KEY = '30743258-d8407cc281d6c3ad648c29387';
@@ -10,7 +10,7 @@ let page = 1;
 let searchQuery = '';
 const observerOpions = {
   root: null,
-  rootMargin: '50px',
+  rootMargin: '100px',
   threshold: 1.0,
 };
 const observer = new IntersectionObserver(onload, observerOpions);
@@ -26,21 +26,25 @@ refs.form.addEventListener('submit', onSubmit);
 
 async function onSubmit(evt) {
   evt.preventDefault();
+
   if (refs.input.value.trim() === '') {
     Notiflix.Notify.failure('Please enter a keyword');
     return;
   }
+
   searchQuery = refs.input.value;
   refs.gallery.innerHTML = '';
   page = 1;
+
   const response = await fetchPhotos();
-  console.log(response);
+
   if (response.data.hits.length === 0) {
     Notiflix.Notify.failure(
       'Sorry, there are no images matching your search query. Please try again.'
     );
     return;
   }
+
   Notiflix.Notify.info(`Hooray! We found ${response.data.totalHits} images.`);
   renderImages(response.data.hits);
   observer.observe(refs.guard);
